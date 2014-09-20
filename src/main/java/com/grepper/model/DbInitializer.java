@@ -14,33 +14,33 @@ public class DbInitializer {
 
     private static GraphDatabaseService graphDb;
     private String DB_PATH = System.getProperty("user.dir") + File.separator + "graphDatabase";
-    private enum CategoryNodes {
+    public enum CategoryNodes {
         MEN,
         WOMEN,
-        KIDS,
-        JACKETS,
-        SAREES,
-        SUITS,
-        SUMMER_WEAR,
-        WINTER_WEAR,
+        KID,
+        JACKET,
+        SAREE,
+        SUIT,
+        SUMMER,
+        WINTER,
         TRENDING,
         TRADITIONAL,
         WESTERN,
         JEANS,
-        SINGLE_PIECE,
         LINGERIE,
-        MOBILES,
-        CAMERAS,
-        SHIRTS,
-        GIFTS,
+        MOBILE,
+        CAMERA,
+        SHIRT,
+        GIFT,
         ANNIVERSARY,
         BIRTHDAY,
         WEDDING,
-        SPORTS,
-        SHOES;
+        SPORT,
+        SHOE,
+        COMIC;
     }
 
-    private enum PersonRelationsNodes{
+    public enum PersonRelationsNodes{
         FRIEND,
         BROTHER,
         MOTHER,
@@ -55,7 +55,7 @@ public class DbInitializer {
         FIANCE;
     }
 
-    private enum CultureNodes{
+    public enum CultureNodes{
         NORTH_INDIAN,
         SOUTH_INDIAN,
         TAMIL,
@@ -68,8 +68,10 @@ public class DbInitializer {
         deleteFileOrDirectory( new File(DB_PATH));
         System.out.println( "Starting database ..." );
         graphDb = new GraphDatabaseFactory().newEmbeddedDatabase(DB_PATH);
+        //if(G) -- NEED TO HAVE CHECK TO SEE IF DATA IS ALREADY POPULATED, IF SO DO NOT CALL INITIALIZE METHODS
         initializeCategories();
         initializeRelationships();
+        initializeCultures();
     }
 
     public static GraphDatabaseService getDbInstance(){
