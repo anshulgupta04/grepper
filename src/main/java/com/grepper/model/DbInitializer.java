@@ -88,6 +88,7 @@ public class DbInitializer {
         initializeRelationships();
         initializeCultures();
         initializeLocations();
+        initializeRelaionships();
     }
 
     public static GraphDatabaseService getDbInstance(){
@@ -199,8 +200,13 @@ public class DbInitializer {
         listPersonRelations.add(PersonRelationsNodes.FIANCE);
 
         categoryToPersonRelationship.put(CategoryNodes.LINGERIE, listPersonRelations);
-        
 
+        List<LocationNodes> listLocationsSummer = new ArrayList<LocationNodes>();
+        List<LocationNodes> listLocationsWinter = new ArrayList<LocationNodes>();
+        listLocationsSummer.add(LocationNodes.CHENNAI);
+        listLocationsWinter.add(LocationNodes.KASHMIR);
+        categoryToLocationRelationship.put(CategoryNodes.SUMMER,listLocationsSummer);
+        categoryToLocationRelationship.put(CategoryNodes.WINTER, listLocationsWinter);
     }
 
     private static void deleteFileOrDirectory( File file )

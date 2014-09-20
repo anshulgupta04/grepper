@@ -9,7 +9,7 @@ import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.index.Index;
 import org.neo4j.graphdb.index.IndexHits;
 
-import static com.grepper.util.ItemRuleEngine;
+
 
 import java.awt.*;
 import java.util.HashMap;
@@ -27,7 +27,7 @@ public class ItemPopulator {
     public void createNode(HashMap<String,String> attributes){
         Node itemNode;
         GraphDatabaseService graphDb = DbInitializer.getDbInstance();
-        Set<String> categorySet = ItemRuleEngine.contextGenerator(attributes.get(TITLE),attributes.get(DESCRIPTION));
+        Set<String> categorySet = ItemRuleEngine.contextGenerator(attributes.get(TITLE), attributes.get(DESCRIPTION));
         // Database operations go here
         itemNode = graphDb.createNode(label);
         for (String key : attributes.keySet()) {
@@ -37,6 +37,26 @@ public class ItemPopulator {
             IndexHits<Node> hit = name.get("name",s);
             Node category = hit.getSingle();
             itemNode.createRelationshipTo(category, Relationships.BELONGS_TO);
+
+            if(s.equals(DbInitializer.CategoryNodes.LINGERIE.toString())){
+                for(DbInitializer.PersonRelationsNodes node : DbInitializer.categoryToPersonRelationship.get(DbInitializer.CategoryNodes.LINGERIE))
+                hit = name.get("name",node.toString());
+                category = hit.getSingle();
+                itemNode.createRelationshipTo(category, Relationships.BELONGS_TO);
+            }
+            if(s.equals(DbInitializer.CategoryNodes.SUMMER.toString())){
+                for(DbInitializer.LocationNodes node : DbInitializer.categoryToLocationRelationship.get(DbInitializer.CategoryNodes.SUMMER))
+                    hit = name.get("name",node.toString());
+                category = hit.getSingle();
+                itemNode.createRelationshipTo(category, Relationships.BELONGS_TO);
+            }
+
+            if(s.equals(DbInitializer.CategoryNodes.WINTER.toString())){
+                for(DbInitializer.LocationNodes node : DbInitializer.categoryToLocationRelationship.get(DbInitializer.CategoryNodes.WINTER))
+                    hit = name.get("name",node.toString());
+                category = hit.getSingle();
+                itemNode.createRelationshipTo(category, Relationships.BELONGS_TO);
+            }
         }
     }
 
