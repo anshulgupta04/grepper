@@ -1,6 +1,8 @@
 package com.grepper.model;
 
 import org.neo4j.graphdb.*;
+import org.neo4j.graphdb.index.Index;
+import org.neo4j.graphdb.index.IndexManager;
 import org.neo4j.tooling.GlobalGraphOperations;
 
 import java.util.HashMap;
@@ -11,6 +13,8 @@ import java.util.HashMap;
 public abstract class BaseNode {
 
     public GraphDatabaseService graphDb = DbInitializer.getDbInstance();
+    private IndexManager index = graphDb.index();
+    private Index<Node> name = index.forNodes("name");
 
     public Label getLabel(){
         return DynamicLabel.label("BaseLabel");
@@ -23,6 +27,8 @@ public abstract class BaseNode {
         categoryNode = graphDb.createNode(getLabel());
         for (String key : attributes.keySet()) {
             categoryNode.setProperty(key, attributes.get(key));
+            name.add(categoryNode,"name",categoryNode.getProperty("name"));
+
         }
     }
     public void printAllLabelNodes(){
